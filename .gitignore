@@ -128,3 +128,11 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Ignore master key for decrypting credentials and more.
+/config/master.key
+
+.idea
+bin
+tmp
+log
