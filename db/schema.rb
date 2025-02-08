@@ -23,14 +23,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_08_084755) do
     t.index ["item_id"], name: "index_cart_items_on_item_id"
   end
 
-  create_table "item_variations", force: :cascade do |t|
-    t.bigint "item_id"
-    t.integer "size"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["item_id"], name: "index_item_variations_on_item_id"
-  end
-
   create_table "items", force: :cascade do |t|
     t.string "brand"
     t.string "name"
