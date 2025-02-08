@@ -1,5 +1,5 @@
 class CartItemsController < ApplicationController
-  # include SizeLocator
+  include SizeLocator
   # serializer
 
   def create
@@ -7,10 +7,4 @@ class CartItemsController < ApplicationController
     cart_item.increment!(:quantity)
     head :ok
   end
-
-  def size
-    @size ||= Size.includes(:item).find(params[:size_id] || params[:id])
-  end
-
-
 end
