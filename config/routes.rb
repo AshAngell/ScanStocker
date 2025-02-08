@@ -14,7 +14,9 @@ Rails.application.routes.draw do
 
   resources :items, except: :show do
     resources :sizes do
-      resources :cart_items, only: :create
+      member do
+        get "cart_items/:ref_id", to: "cart_items#create"
+      end
     end
   end
 
