@@ -133,6 +133,5 @@ dist
 /config/master.key
 
 .idea
-bin
 tmp
 log
