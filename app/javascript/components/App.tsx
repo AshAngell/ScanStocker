@@ -1,11 +1,13 @@
-import Button from "./Button/Button";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HomePage } from "./routes";
 
 const App = () => {
   return (
-    <>
-      <h1>Hello, React + TypeScript + Rails!</h1>
-      <Button />
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </Router>
   );
 };
 
