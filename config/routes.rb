@@ -16,7 +16,7 @@ Rails.application.routes.draw do
   resources :items do
     resources :sizes do
       member do
-        get "cart_items/:ref_id", to: "cart_items#create"
+        post "cart_items", to: "cart_items#create"
       end
     end
   end
