@@ -10,18 +10,12 @@ const QRCodeScanner = () => {
 
   return (
     <div>
-      <h2>QR Code Scanner</h2>
       <VideoFeed videoRef={videoRef} />
       <Button onClick={takePhoto} shouldFitContainer>
-        Take Photo
+        Add to Cart
       </Button>
       <PhotoCaptureCanvas canvasRef={canvasRef} />
-      {qrCodeUrl && (
-        <div>
-          <h3>QR Code URL:</h3>
-          <p>{qrCodeUrl}</p>
-        </div>
-      )}
+      {qrCodeUrl}
     </div>
   );
 };

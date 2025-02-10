@@ -2,10 +2,10 @@
   "name": "app",
   "private": true,
   "scripts": {
-    "build": "esbuild app/javascript/entry.tsx --bundle --outfile=app/assets/builds/application.js",
-    "watch": "esbuild app/javascript/entry.tsx --bundle --outfile=app/assets/builds/application.js --watch",
+    "build": "esbuild app/javascript/application.tsx --bundle --outfile=app/assets/builds/application.js",
+    "watch": "esbuild app/javascript/application.tsx --bundle --outfile=app/assets/builds/application.js --watch",
     "dev": "sh bin/dev",
-    "build:css": "npx @tailwindcss/cli -i app/assets/stylesheets/main.css -o app/assets/stylesheets/application.css"
+    "build:css": "npx @tailwindcss/cli -i app/assets/stylesheets/tailwind.css -o ./app/assets/builds/tailwind.css"
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
@@ -24,9 +24,10 @@
   "dependencies": {
     "@tailwindcss/cli": "^4.0.5",
     "clsx": "^2.1.1",
+    "jsqr": "^1.4.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-router-dom": "^6.29.0",
-    "tailwindcss": "^4.0.5"
+    "tailwindcss": "^4.0.5",
+    "uuid": "^11.0.5"
   }
 }

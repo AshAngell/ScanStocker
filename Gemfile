@@ -18,7 +18,7 @@ gem "stimulus-rails"
 # Build JSON APIs with ease [https://github.com/rails/jbuilder]
 gem "jbuilder"
 # Connects Rails to our esbuild out [https://github.com/rails/jsbundling-rails]
-gem 'jsbundling-rails'
+gem "jsbundling-rails"
 
 gem "jsonapi-serializer"
 
@@ -64,4 +64,3 @@ group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
 end
-

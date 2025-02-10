@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
 
+  root to: proc { [ 200, {}, [ ApplicationController.render(template: "layouts/application") ] ] }
 
   resources :items do
     resources :sizes do
@@ -20,5 +21,4 @@ Rails.application.routes.draw do
       end
     end
   end
-
 end
