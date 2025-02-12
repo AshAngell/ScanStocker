@@ -2,8 +2,7 @@
   "name": "scanstocker",
   "private": true,
   "engines": {
-    "node": "18.x",
-    "npm": "10.8.2"
+    "node": "18.x"
   },
   "scripts": {
     "build": "esbuild app/javascript/application.tsx --bundle --outfile=app/assets/builds/application.js",
