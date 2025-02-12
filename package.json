@@ -1,8 +1,8 @@
 {
-  "name": "app",
+  "name": "scanstocker",
   "private": true,
   "engines": {
-    "node": "18.20.6",
+    "node": "18.x",
     "npm": "10.8.2"
   },
   "scripts": {
