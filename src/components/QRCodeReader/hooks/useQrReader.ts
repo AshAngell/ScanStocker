@@ -7,9 +7,12 @@ export const useQrReader = (
   canvasRef: React.RefObject<HTMLCanvasElement | null>;
   takePhoto: () => void;
   qrCodeUrl: string | null;
+  resetQrCodeUrl: () => void;
 } => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [qrCodeUrl, setQrCodeUrl] = useState<string>("noQRCode");
+  const [qrCodeUrl, setQrCodeUrl] = useState<string | null>(null);
+
+  const resetQrCodeUrl = () => setQrCodeUrl(null);
 
   const takePhoto = () => {
     if (videoRef.current && canvasRef.current) {
@@ -34,7 +37,7 @@ export const useQrReader = (
         if (code) {
           setQrCodeUrl(code.data);
         } else {
-          setQrCodeUrl("noQRCode");
+          setQrCodeUrl(null);
         }
 
         context.reset();
@@ -42,5 +45,5 @@ export const useQrReader = (
     }
   };
 
-  return { canvasRef, takePhoto, qrCodeUrl };
+  return { canvasRef, takePhoto, qrCodeUrl, resetQrCodeUrl };
 };

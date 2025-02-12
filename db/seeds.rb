@@ -18,3 +18,9 @@ soda = Item.create(name: "Diet Soda", units: "mL")
 Size.create(item: soda, amount: 355)
 
 
+coke = Item.create(brand: "Coca-cola", name: "No sugar", units: "mL")
+
+Size.create(item: coke, amount: 375)
+Size.create(item: coke, amount: 600)
+Size.create(item: coke, amount: 1120)
+Size.create(item: coke, amount: 2000)
