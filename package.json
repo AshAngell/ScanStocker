@@ -1,6 +1,10 @@
 {
   "name": "app",
   "private": true,
+  "engines": {
+    "node": "18.20.6",
+    "npm": "10.8.2"
+  },
   "scripts": {
     "build": "esbuild app/javascript/application.tsx --bundle --outfile=app/assets/builds/application.js",
     "watch": "esbuild app/javascript/application.tsx --bundle --outfile=app/assets/builds/application.js --watch",
