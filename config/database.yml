@@ -82,7 +82,6 @@ production:
   primary: &primary_production
     <<: *default
     url: <%= ENV["DATABASE_URL"] %>
-    database: scan_stocker
 #  cache:
 #    <<: *primary_production
 #    database: scan_stocker_production_cache
