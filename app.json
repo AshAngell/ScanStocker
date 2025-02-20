@@ -1,4 +1,10 @@
 {
+  "addons": [
+    "heroku-postgresql",
+    {
+      "plan": "heroku-postgresql:standard-0"
+    }
+  ],
   "buildpacks": [
     {
       "url": "heroku/nodejs"

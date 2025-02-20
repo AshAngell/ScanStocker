@@ -292,6 +292,8 @@ GEM
       rubocop-performance
       rubocop-rails
     ruby-progressbar (1.13.0)
+    scout_apm (5.6.0)
+      parser
     securerandom (0.4.1)
     solid_cable (3.0.7)
       actioncable (>= 7.2)
@@ -379,6 +381,7 @@ DEPENDENCIES
   rails (~> 8.0.1)
   rspec-rails
   rubocop-rails-omakase
+  scout_apm
   solid_cable
   solid_cache
   solid_queue

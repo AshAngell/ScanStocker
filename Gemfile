@@ -37,6 +37,8 @@ gem "solid_cache"
 gem "solid_queue"
 gem "solid_cable"
 
+gem 'scout_apm'
+
 gem "bundler", "2.5.23", require: false
 
 # Reduces boot times through caching; required in config/boot.rb
