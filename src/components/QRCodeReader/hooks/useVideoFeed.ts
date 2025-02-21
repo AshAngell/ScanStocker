@@ -6,13 +6,19 @@ export const useVideoFeed = () => {
   useEffect(() => {
     const startVideo = async () => {
       try {
-        // Request video stream
+        // Request video stream with explicit constraints
         const stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
+          video: {
+            facingMode: "environment", // Ensures front camera usage on mobile
+            width: { ideal: 1280 }, // Adjust resolution
+            height: { ideal: 720 },
+          },
         });
 
         if (videoRef.current) {
           videoRef.current.srcObject = stream;
+          videoRef.current.play(); // Ensure playback starts
+          videoRef.current.playsInline = true; // Required for iOS
         }
       } catch (error) {
         console.error("Error accessing camera:", error);
@@ -24,8 +30,7 @@ export const useVideoFeed = () => {
     return () => {
       if (videoRef.current?.srcObject) {
         const stream = videoRef.current.srcObject as MediaStream;
-        const tracks = stream.getTracks();
-        tracks.forEach((track) => track.stop());
+        stream.getTracks().forEach((track) => track.stop());
       }
     };
   }, []);

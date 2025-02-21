@@ -31,7 +31,7 @@ const QRCodeScanner = ({ cartId }: { cartId: string | undefined | null }) => {
     <div>
       <VideoFeed videoRef={videoRef} />
       <Button onClick={takePhoto} shouldFitContainer>
-        Add to Cart
+        Add to Cart test
       </Button>
       <PhotoCaptureCanvas canvasRef={canvasRef} />
       {loading && "posting..."}
