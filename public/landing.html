@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Animated Triangle Background</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: #222;
+        }
+        canvas {
+            display: block;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+    </style>
+</head>
+<body>
+<canvas id="bgCanvas"></canvas>
+<script>
+    const bgCanvas = document.getElementById("bgCanvas");
+    const bgCtx = bgCanvas.getContext("2d");
+    let bgWidth = window.innerWidth, bgHeight = window.innerHeight;
+    bgCanvas.width = bgWidth;
+    bgCanvas.height = bgHeight;
+
+    const bgGridSize = 50;
+    let bgCols = Math.ceil(bgWidth / bgGridSize);
+    let bgRows = Math.ceil(bgHeight / bgGridSize);
+    let bgVertices = [];
+    const bgJitter = bgGridSize * 0.3;
+    const bgJitterZ = bgGridSize * 0.2;
+
+    function generateBgVertices() {
+        bgCols = Math.ceil(bgWidth / bgGridSize);
+        bgRows = Math.ceil(bgHeight / bgGridSize);
+        bgVertices = [];
+        for (let j = -1; j <= bgRows; j++){
+            let row = [];
+            for (let i = -1; i <= bgCols; i++){
+                const dx = (Math.random()*2 - 1) * bgJitter;
+                const dy = (Math.random()*2 - 1) * bgJitter;
+                const dz = (Math.random()*2 - 1) * bgJitterZ;
+                row.push({ x: i*bgGridSize+dx, y: j*bgGridSize+dy, z: dz });
+            }
+            bgVertices.push(row);
+        }
+    }
+    generateBgVertices();
+
+    let bgLightX = bgWidth/2, bgLightY = bgHeight/2, bgLightZ = 300;
+    window.addEventListener("mousemove", (e) => {
+        const rect = bgCanvas.getBoundingClientRect();
+        bgLightX = e.clientX - rect.left;
+        bgLightY = e.clientY - rect.top;
+    });
+    window.addEventListener("resize", () => {
+        bgWidth = window.innerWidth;
+        bgHeight = window.innerHeight;
+        bgCanvas.width = bgWidth;
+        bgCanvas.height = bgHeight;
+        generateBgVertices();
+    });
+
+    function crossBg(v1, v2){
+        return {
+            x: v1.y*v2.z - v1.z*v2.y,
+            y: v1.z*v2.x - v1.x*v2.z,
+            z: v1.x*v2.y - v1.y*v2.x
+        };
+    }
+
+    function normalizeBg(v){
+        const mag = Math.sqrt(v.x*v.x + v.y*v.y + v.z*v.z);
+        return { x: v.x/mag, y: v.y/mag, z: v.z/mag };
+    }
+
+    function drawBgFace(a, b, c) {
+        // Compute centroid (using x, y for gradient; z for dynamic lighting)
+        const centroid = {
+            x: (a.x + b.x + c.x) / 3,
+            y: (a.y + b.y + c.y) / 3,
+            z: (a.z + b.z + c.z) / 3
+        };
+
+        // Dynamic lighting: compute face normal
+        const v1 = { x: b.x - a.x, y: b.y - a.y, z: b.z - a.z };
+        const v2 = { x: c.x - a.x, y: c.y - a.y, z: c.z - a.z };
+        let normal = normalizeBg(crossBg(v1, v2));
+
+        // Compute light vector from centroid to mouse-based light source
+        const lightVec = {
+            x: bgLightX - centroid.x,
+            y: bgLightY - centroid.y,
+            z: bgLightZ - centroid.z
+        };
+        const normLight = normalizeBg(lightVec);
+
+        // Dot product for dynamic brightness modulation
+        let dot = normal.x * normLight.x + normal.y * normLight.y + normal.z * normLight.z;
+        dot = Math.max(dot, 0);
+
+        // Compute gradient fraction based on distance from the bottom right corner
+        const centerX = bgWidth, centerY = bgHeight;
+        const dx = centroid.x - centerX, dy = centroid.y - centerY;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        const maxDist = Math.sqrt(bgWidth*bgWidth + bgHeight*bgHeight);
+        const fraction = dist / maxDist;
+
+        // Interpolate base color from #000428 to #004e92:
+        // #000428 → RGB(0,4,40)
+        // #004e92 → RGB(0,78,146)
+        const startR = 0, startG = 4, startB = 40;
+        const endR = 0, endG = 78, endB = 146;
+
+        let baseR = Math.round(startR * (1 - fraction) + endR * fraction);
+        let baseG = Math.round(startG * (1 - fraction) + endG * fraction);
+        let baseB = Math.round(startB * (1 - fraction) + endB * fraction);
+
+        // Apply dynamic brightness modulation based on dot product
+        let brightness = 1 + (dot - 0.5) * 0.4;
+        baseR = Math.round(Math.min(255, Math.max(0, baseR * brightness)));
+        baseG = Math.round(Math.min(255, Math.max(0, baseG * brightness)));
+        baseB = Math.round(Math.min(255, Math.max(0, baseB * brightness)));
+
+        const fillColor = `rgb(${baseR}, ${baseG}, ${baseB})`;
+
+        bgCtx.fillStyle = fillColor;
+        bgCtx.strokeStyle = "rgba(128,128,128,0.5)";
+        bgCtx.beginPath();
+        bgCtx.moveTo(a.x, a.y);
+        bgCtx.lineTo(b.x, b.y);
+        bgCtx.lineTo(c.x, c.y);
+        bgCtx.closePath();
+        bgCtx.fill();
+        bgCtx.stroke();
+    }
+
+    function drawBgTriangles() {
+        bgCtx.clearRect(0, 0, bgWidth, bgHeight);
+        for (let j = 0; j < bgVertices.length - 1; j++) {
+            for (let i = 0; i < bgVertices[0].length - 1; i++) {
+                const p1 = bgVertices[j][i],
+                    p2 = bgVertices[j][i+1],
+                    p3 = bgVertices[j+1][i],
+                    p4 = bgVertices[j+1][i+1];
+                drawBgFace(p1, p2, p3);
+                drawBgFace(p2, p4, p3);
+            }
+        }
+    }
+
+    function animateBg() {
+        drawBgTriangles();
+        requestAnimationFrame(animateBg);
+    }
+
+    animateBg();
+</script>
+</body>
+</html>
