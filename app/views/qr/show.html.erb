@@ -1,0 +1,12 @@
+<h1>Qr Codes</h1>
+
+<% @sizes.each do |size| %>
+
+  <h2><%= size.item.brand %> <%= size.item.name %> <%= size.amount %><%= size.item.units %></h2>
+  <div style="margin-bottom: 100px">
+    <%= RQRCode::QRCode.new(cart_items_item_size_url(size.item, size)).as_svg.html_safe %>
+  </div>
+
+<% end %>
+
+

@@ -22,6 +22,8 @@ gem "jsbundling-rails"
 
 gem "jsonapi-serializer"
 
+gem "rqrcode", "~> 2.0"
+
 gem "pundit"
 
 gem "mutex_m"
