@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  namespace :ai do
+    resource :product, only: [:show, :create]
+  end
+
   get "qrs", to: "qr#show"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

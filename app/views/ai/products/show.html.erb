@@ -1,0 +1,40 @@
+<h1>Upload an Image</h1>
+<style>
+    /* Minimal styles for demonstration */
+    body { font-family: sans-serif; }
+    #result { margin-top: 20px; padding: 10px; background: #f0f0f0; }
+</style>
+
+<form id="upload-form" action="/ai/product" method="post" enctype="multipart/form-data">
+  <label for="image">Take a Photo:</label>
+  <input type="file" id="image" name="image" accept="image/jpeg,image/png" capture="environment">
+  <button type="submit">Analyze</button>
+</form>
+
+<div id="results">
+  <!-- The server's response will be injected here -->
+</div>
+
+<script>
+  document.getElementById("upload-form").addEventListener("submit", function(e) {
+    e.preventDefault(); // prevent default form submission
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    // Send the form data via fetch with the desired Accept header.
+    const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+    fetch(form.action, {
+      method: form.method,
+      body: formData,
+      headers: {
+        "Accept": "text/html",
+        "X-CSRF-Token": csrfToken
+      }
+    })
+      .then(response => response.text())
+      .then(html => {
+        document.getElementById("results").innerHTML = html;
+      });
+  });
+</script>
