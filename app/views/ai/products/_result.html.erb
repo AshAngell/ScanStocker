@@ -1,4 +1,8 @@
-<div>
-  <h3>AI Response:</h3>
+<div id="ai-result">
   <pre><%= result %></pre>
+  <script type="application/json" id="ai-response">
+    <%= result.html_safe %>
+  </script>
+  <button id="create-item-btn">Create Item</button>
 </div>
+

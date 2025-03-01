@@ -27,10 +27,11 @@ module Ai
 
     def prompt
       <<~HEREDOC
-        From this image determine the brand, the product the size (with the unit of size; g, L, Kg etc) and
-        return the results in a json object.  The size and the units should be seperated. The json payload
-        should use the keys: brand, product, size, and units.  if it is a pack/multipack then the size and
-        units should be in the appended to the product, and the size should the number in the pack and the
+        From this image determine the brand, the product the size (with the unit of size; g, L, Kg etc) and 
+        return the results in a json object.  The size and the units should be seperated. The json payload 
+        should use the keys: brand, product, size, and units.  If it is a pack/multipack then the size and 
+        units should be in the appended to the product (for example a 12 pack of 365mL cans should include 
+        `(12 x 365mL)` in the product "name"), and the size should the number in the pack and the 
         unit size should be "pack".
       HEREDOC
     end
@@ -48,7 +49,8 @@ module Ai
 
     def ai
       @ai ||= client.chat(parameters: { model: "gpt-4o", messages: [{ role: "user", content: messages }] })
-            .dig("choices", 0, "message", "content")
+                    .dig("choices", 0, "message", "content")
+                    .gsub(/```json\s*|```/, "").strip
     end
   end
 end

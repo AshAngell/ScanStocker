@@ -48,7 +48,7 @@
     const formData = new FormData(form);
 
     // Show the spinner while waiting
-    document.getElementById("results").innerHTML = '<div class="spinner"></div>';
+    document.getElementById("results").innerHTML = "<div class=\"spinner\"></div>";
 
     // Retrieve CSRF token if needed
     const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
@@ -70,5 +70,55 @@
         console.error("Error:", error);
         document.getElementById("results").innerHTML = "An error occurred.";
       });
+  });
+
+  document.addEventListener("click", function(event) {
+    if (event.target.matches("#create-item-btn")) {
+      // Retrieve the JSON content from the script tag
+      const aiResponseScript = document.getElementById("ai-response");
+      if (!aiResponseScript) {
+        console.error("ai-response script element not found.");
+        return;
+      }
+      const aiResponse = JSON.parse(aiResponseScript.textContent);
+
+      // Transform the AI response into the parameters your controller expects.
+      const itemParams = {
+        item: {
+          brand: aiResponse.brand,
+          name: aiResponse.product,  // Map "product" to "name"
+          units: aiResponse.units,
+          sizes_attributes: [
+            { amount: aiResponse.size }
+          ]
+        }
+      };
+
+      const csrfToken = document.querySelector("meta[name='csrf-token']").getAttribute("content");
+
+      fetch("/items", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRF-Token": csrfToken,
+          "Accept": "application/json"
+        },
+        body: JSON.stringify(itemParams)
+      })
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("Item created:", data);
+          alert("Item created successfully!");
+        })
+        .catch(error => {
+          console.error("Error creating item:", error);
+          alert("Error creating item");
+        });
+    }
   });
 </script>
