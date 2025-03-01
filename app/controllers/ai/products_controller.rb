@@ -27,9 +27,11 @@ module Ai
 
     def prompt
       <<~HEREDOC
-        From this image determine the brand, the product the size (with the unit of size; g, L, Kg etc) and 
-        return the results in a json object.  The size and the units should be seperated. The json payload 
-        should use the keys: brand, product, size, and units.
+        From this image determine the brand, the product the size (with the unit of size; g, L, Kg etc) and
+        return the results in a json object.  The size and the units should be seperated. The json payload
+        should use the keys: brand, product, size, and units.  if it is a pack/multipack then the size and
+        units should be in the appended to the product, and the size should the number in the pack and the
+        unit size should be "pack".
       HEREDOC
     end
 
